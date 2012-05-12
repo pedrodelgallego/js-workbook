@@ -156,7 +156,7 @@ describe('EventEmitter', function(){
     it( 'emit should pass the list of parameters as arguments to the ', function(){
       var count = 0;
       emitter.once('event1', function(param) {
-        flag += 1;
+        count += 1;
       });
 
       emitter
