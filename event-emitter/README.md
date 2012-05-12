@@ -12,41 +12,45 @@ be associated to event names, to be executed when an event is emitted.
 These functions are called listeners.
 
 Start by running the test, fix the file emitter in the emitter.js file
-```
+```javascript
 mocha specs/emitter-specs.js
 ```
 
 The API
 -------
 
-** emitter.on(event, listener) **
+*emitter.on(event, listener)*
+
 Adds a listener to the end of the listeners array for the specified event.
-```
+```javascript
 server.on('connection', function (stream) {
   console.log('someone connected!');
 });
 ```
 
-** emitter.emit(event, [arg1], [arg2], [...]) ***
+*emitter.emit(event, [arg1], [arg2], [...])*
+
 Execute each of the listeners in order with the supplied arguments.
-```
+```javascript
 emitter.emit('connection');
 ```
 
-** emitter.once(event, listener) **
+*emitter.once(event, listener)*
+
 Adds a one time listener for the event. The listener is invoked only
 the first time the event is fired, after which it is removed.
-```
+```javascript
 server.once('connection', function (stream) {
   console.log('Ah, we have our first user!');
 });
 ```
 
-** emitter.removeListener(event, listener) **
+*emitter.removeListener(event, listener)*
+
 Remove a listener from the listener array for the specified event.
 Caution: changes array indices in the listener array behind the
 listener.
-```
+```javascript
 var callback = function(stream) {
   console.log('someone connected!');
 };
