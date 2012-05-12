@@ -19,7 +19,7 @@ mocha specs/emitter-specs.js
 The API
 -------
 
-*emitter.on(event, listener)*
+**emitter.on(event, listener)**
 
 Adds a listener to the end of the listeners array for the specified event.
 ```javascript
@@ -28,14 +28,14 @@ server.on('connection', function (stream) {
 });
 ```
 
-*emitter.emit(event, [arg1], [arg2], [...])*
+**emitter.emit(event, [arg1], [arg2], [...])**
 
 Execute each of the listeners in order with the supplied arguments.
 ```javascript
 emitter.emit('connection');
 ```
 
-*emitter.once(event, listener)*
+**emitter.once(event, listener)**
 
 Adds a one time listener for the event. The listener is invoked only
 the first time the event is fired, after which it is removed.
@@ -45,7 +45,7 @@ server.once('connection', function (stream) {
 });
 ```
 
-*emitter.removeListener(event, listener)*
+**emitter.removeListener(event, listener)**
 
 Remove a listener from the listener array for the specified event.
 Caution: changes array indices in the listener array behind the
