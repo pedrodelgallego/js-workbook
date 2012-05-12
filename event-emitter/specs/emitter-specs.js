@@ -1,5 +1,5 @@
 var should = require("should"),
-    EventEmitter = require('../emitter.js');
+    EventEmitter = require('../emitter-solution.js');
 
 describe('EventEmitter', function(){
   var emitter;
@@ -32,6 +32,30 @@ describe('EventEmitter', function(){
     it('second parameter should be a function', function(){
       (function(){
         emitter.on("event:name", "not a function")
+      }).should.throw();
+    });
+  });
+
+  describe('#once', function(){
+    it('is be a function', function(){
+      emitter.once.should.be.a('function');
+    });
+
+    it('with no arguments should throw an error', function(){
+      (function(){
+        emitter.once()
+      }).should.throw('Cannot bind to event emitter. The passed event is not a string');
+    });
+
+    it('first parameter should be a string', function(){
+      (function(){
+        emitter.once(1, function(){})
+      }).should.throw('Cannot bind to event emitter. The passed event is not a string');
+    });
+
+    it('second parameter should be a function', function(){
+      (function(){
+        emitter.once("event:name", "not a function")
       }).should.throw();
     });
   });
@@ -118,7 +142,7 @@ describe('EventEmitter', function(){
       flag2.should.equal(true);
     });
 
-    it( 'trigger should pass the list of parameters as arguments to the ', function(){
+    it( 'emit should pass the list of parameters as arguments to the ', function(){
       var flag;
       emitter.on('event1', function(param) {
         flag = param;
@@ -127,6 +151,19 @@ describe('EventEmitter', function(){
       emitter.emit('event1', true);
 
       flag.should.equal(true);
+    });
+
+    it( 'emit should pass the list of parameters as arguments to the ', function(){
+      var count = 0;
+      emitter.once('event1', function(param) {
+        flag += 1;
+      });
+
+      emitter
+        .emit('event1')
+        .emit('event1');
+
+      count.should.equal(1);
     });
   });
 })
