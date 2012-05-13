@@ -22,10 +22,14 @@ additional `bind` arguments to those passed to the bound function.
 Lazy defined methods may be bound by passing the object they are bound
 to as `func` and the method name as `thisArg`.
 
+The API
+-------
+
 This is the approach that underscore.js takes in its implementation of
 the bind method. Let's take a look at the API of bind in uderscore.
 
-*bind_.bind(function, object, [\*arguments])*
+**bind_.bind(function, object, [\*arguments])**
+
 Bind a function to an object, meaning that whenever the function is
 called, the value of this will be the object. Optionally, bind
 arguments to the function to pre-fill them, also known as partial
@@ -39,7 +43,8 @@ func();
 => 'hi: moe'
 ```
 
-*bindAll_.bindAll(object, [*methodNames])*
+**bindAll_.bindAll(object, [*methodNames])**
+
 Binds a number of methods on the object, specified by methodNames, to
 be run in the context of that object whenever they are invoked. Very
 handy for binding functions that are going to be used as event
