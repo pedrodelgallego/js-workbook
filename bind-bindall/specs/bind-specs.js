@@ -6,8 +6,8 @@ var should = require("should"),
 describe('bind', function(){
   var context, func;
   beforeEach(function(){
-    var context = {name : 'moe'};
-    var func = function(arg) {
+    context = {name : 'moe'};
+    func = function(arg) {
       return "name: " + (this.name || arg);
     };
   });
