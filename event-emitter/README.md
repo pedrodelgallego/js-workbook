@@ -2,16 +2,17 @@ The pubsub or Event Emitter pattern
 ===================================
 
 The goal of this kata is to build a simple and easy to use event
-emitter library. The event emitter will allows you to create your own
+emitter library. The event emitter will allow us to create our own
 custom events.
 
 Let's take for example the NodeJS Event emitter API. Many objects in
 Node emit events. All objects which emit events are instances of
-EventEmitter. Event names are represented string. Functions can then
-be associated to event names, to be executed when an event is emitted.
-These functions are called listeners.
+EventEmitter, Event names are represented by string, and functions can then
+be associated to event in order to be executed when an event is
+emitted. These functions are called listeners or handlers.
 
-Start by running the test, fix the file emitter in the emitter.js file
+Start by running the test suite, implemented the necessary functions
+in the emitter.js file in order to make all the test pass.
 ```javascript
 mocha specs/emitter-specs.js
 ```
@@ -58,6 +59,15 @@ server.on('connection', callback);
 // ...
 server.removeListener('connection', callback);
 ```
+
+Code Reading Section
+--------------------
+
+Many frameworks implement their own emitter pattern. I.e
+
+* LucidJs
+* jQuery
+
 
 Beyond the basic event emitter
 ------------------------------

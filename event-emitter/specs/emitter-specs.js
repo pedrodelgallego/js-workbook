@@ -1,5 +1,5 @@
 var should = require("should"),
-    EventEmitter = require('../emitter-solution.js');
+    EventEmitter = require('../emitter.js');
 
 describe('EventEmitter', function(){
   var emitter;
@@ -58,6 +58,19 @@ describe('EventEmitter', function(){
         emitter.once("event:name", "not a function")
       }).should.throw();
     });
+
+    it( 'handlers are executed the only first time the event is emitted', function(){
+      var count = 0;
+      emitter.once('event1', function(param) {
+        count += 1;
+      });
+
+      emitter
+        .emit('event1')
+        .emit('event1');
+
+      count.should.equal(1);
+    });
   });
 
   describe('#emit', function(){
@@ -73,8 +86,87 @@ describe('EventEmitter', function(){
 
     it('first parameter should be a string', function(){
       (function(){
-        emitter.on(1)
+        emitter.emit(1)
       }).should.throw();
+    });
+  });
+
+  describe('#remove', function(){
+    it('is a function', function(){
+      emitter.remove.should.be.a('function');
+    });
+
+    it('with no arguments should throw an error', function(){
+      (function(){
+        emitter.remove()
+      }).should.throw();
+    });
+
+    it('first parameter should be a string', function(){
+      (function(){
+        emitter.remove(1)
+      }).should.throw();
+    });
+
+    it('second parameter should be a function', function(){
+      (function(){
+        emitter.remove("event:name", "not a function")
+      }).should.throw();
+    });
+
+    it( 'unbind a hanler from a given event', function(){
+      var count = 0;
+      var increment = function(param) {
+        count += 1;
+      }
+
+      emitter.on('event1', increment);
+      emitter.emit('event1');
+      emitter.remove('event1', increment);
+      emitter.emit('event1');
+
+      count.should.equal(1);
+    });
+
+    it( 'unbind only the passed  hanler from a given event', function(){
+      var event1Flag = false,
+          event2Flag = false;
+
+      var event1 = function() { event1Flag = true; },
+          event2 = function() { event2Flag = true; };
+
+      emitter.on('event1', event1);
+      emitter.on('event2', event2);
+      emitter.remove('event1', event1);
+
+      emitter.emit('event1');
+      emitter.emit('event2');
+
+      event2Flag.should.equal(true);
+      event1Flag.should.equal(false);
+    });
+
+    it( 'unbind all the handlers of a given if not handler is passed', function(){
+      var event1Flag = false,
+          event1Flag2 = false,
+          event3Flag = false;
+
+      var event1 = function() { event1Flag = true; },
+          event2 = function() { event2Flag = true; },
+          event3 = function() { event3Flag = true; };
+
+      emitter.on('event1', event1);
+      emitter.on('event1', event2);
+      emitter.on('event3', event3);
+      emitter.remove('event1');
+
+      emitter.emit('event1');
+      emitter.emit('event2');
+      emitter.emit('event3');
+
+      event1Flag.should.equal(false);
+      event2Flag.should.equal(false);
+      event3Flag.should.equal(true);
     });
   });
 
@@ -142,7 +234,7 @@ describe('EventEmitter', function(){
       flag2.should.equal(true);
     });
 
-    it( 'emit should pass the list of parameters as arguments to the ', function(){
+    it( 'emit should pass the list of parameters as arguments to the handler', function(){
       var flag;
       emitter.on('event1', function(param) {
         flag = param;
@@ -151,19 +243,6 @@ describe('EventEmitter', function(){
       emitter.emit('event1', true);
 
       flag.should.equal(true);
-    });
-
-    it( 'emit should pass the list of parameters as arguments to the ', function(){
-      var count = 0;
-      emitter.once('event1', function(param) {
-        count += 1;
-      });
-
-      emitter
-        .emit('event1')
-        .emit('event1');
-
-      count.should.equal(1);
     });
   });
 })
