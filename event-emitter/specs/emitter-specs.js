@@ -108,7 +108,7 @@ describe('EventEmitter', function(){
       event1Flag.should.equal(false);
     });
 
-    it( 'on method should catch and execute all the function associated to an specific event', function(){
+    it( 'on method can associate more than one handler for a given event', function(){
       var flag1 = false,
           flag2 = false;
 
