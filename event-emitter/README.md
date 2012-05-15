@@ -29,7 +29,7 @@ server.on('connection', function (stream) {
 });
 ```
 
-**emitter.emit(event, [arg1], [arg2], [...])**
+**emitter.emit(event, listener)**
 
 Execute each of the listeners in order with the supplied arguments.
 ```javascript
@@ -65,8 +65,25 @@ Code Reading Section
 
 Many frameworks implement their own emitter pattern. I.e
 
-* LucidJs
-* jQuery
+jQuery use a
+```javascript
+one: function( types, selector, data, fn ) {
+  return this.on( types, selector, data, fn, 1 );
+},
+```
+
+```javascript
+if ( one === 1 ) {
+  origFn = fn;
+  fn = function( event ) {
+    // Can use an empty set, since event contains the info
+    jQuery().off( event );
+    return origFn.apply( this, arguments );
+  };
+  // Use same guid so caller can remove using origFn
+  fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
+}
+```
 
 
 Beyond the basic event emitter

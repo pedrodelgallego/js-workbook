@@ -7,6 +7,14 @@ the new scope this has change its semantics meaning.
 
 This is common source of bugs in code using jQuery callback or
 setTimeouts functions.
+
+```javascript
+var hello = function(){console.log("hello " + this.name)}
+setTimeout(hello({name: "Pedro"}), 1000);
+=> 'hi: moe'
+setTimeout(bind(hello, {name: "Pedro"}), 1000);
+```
+
 ```javascript
 $('.report').click(function() {
   $(this).after('<a href="#" id="confirm">Confirm</a>'); $('#confirm').click(function() {
@@ -15,12 +23,14 @@ $('.report').click(function() {
   });
 });
 ```
-
 One way to solve this it is creates a new function that, when called,
 invokes `func` with the `this` binding of `thisArg` and prepends any
 additional `bind` arguments to those passed to the bound function.
 Lazy defined methods may be bound by passing the object they are bound
 to as `func` and the method name as `thisArg`.
+
+The bind function its also use to mimic partial application in
+javascript.
 
 The API
 -------
