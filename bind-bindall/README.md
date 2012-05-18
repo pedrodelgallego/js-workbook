@@ -14,15 +14,33 @@ setTimeout(hello({name: "Pedro"}), 1000);
 => 'hi: moe'
 setTimeout(bind(hello, {name: "Pedro"}), 1000);
 ```
-
+In JavaScript, the meaning of this isn't always intuitive. Consider
+this code:
 ```javascript
-$('.report').click(function() {
-  $(this).after('<a href="#" id="confirm">Confirm</a>'); $('#confirm').click(function() {
-    var action = $(this).data('action');
-    // why is action undefined???
-  });
-});
+var PlayerList;
+
+PlayerList = (function() {
+  function PlayerList(el) {
+    this.el = $(el).on('click', 'li', this.clicked);
+  }
+
+  PlayerList.prototype.clicked = function(e) {
+    return this.highlight();
+  };
+
+  PlayerList.prototype.highlight = function() {
+    // ...
+  };
+
+  return PlayerList;
+})();
 ```
+One might expect that this in the clicked method to be our PlayerList
+instance, but instead, it'll be the row which is clicked. This means
+that the call to highlight will fail, since the html row element
+doesn't have a highlight method. That clicked exists as a method of
+DataTable doesn't mean much.
+
 One way to solve this it is creates a new function that, when called,
 invokes `func` with the `this` binding of `thisArg` and prepends any
 additional `bind` arguments to those passed to the bound function.
@@ -70,4 +88,46 @@ var buttonView = {
 _.bindAll(buttonView);
 jQuery('#underscore_button').bind('click', buttonView.onClick);
 => When the button is clicked, this.label will have the correct value...
+```
+
+Code Reading
+------------
+The fat arrow operator in javascript was introduced to solve this
+problem.
+```coffeescript
+class PlayerList
+  constructor: (el) ->
+    @el = $(el).on 'click', 'li', @clicked
+
+  clicked: (e) =>
+    this.highlight()
+
+  highlight: =>
+    ....
+```
+Lets take a look at the compile output of the PlayerList class, when
+we use the fat arrow to define the method clicked.
+```javascript
+var PlayerList,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+PlayerList = (function() {
+
+  PlayerList.name = 'PlayerList';
+
+  function PlayerList(el) {
+    this.highlight = __bind(this.highlight, this);
+
+    this.clicked = __bind(this.clicked, this);
+    this.el = $(el).on('click', 'li', this.clicked);
+  }
+
+  PlayerList.prototype.clicked = function(e) {
+    return this.highlight();
+  };
+
+  PlayerList.prototype.highlight = function() {};
+
+  return PlayerList;
+})();
 ```
