@@ -85,6 +85,33 @@ if ( one === 1 ) {
 }
 ```
 
+Now, that we have seen how jQuery use a unique guid to identify
+functions, how this affect the proxy function that we study in the
+"bind and bindAll" chapter? jQuery makes sure that even if you bind
+the function returned from jQuery.proxy() it will still unbind the
+correct function if passed the original. However, jQuery's event
+binding subsystem assigns a unique id to each event handling function
+in order to track it when it is used to specify the function to be
+unbound. The function represented by $.proxy() is seen as a single
+function by the event subsystem, even when it is used to bind
+different contexts.
+
+If we look in to the proxy function, we will see that jQuery will
+clone the guid number and attached to it to the newly created
+function.
+
+```javascript
+// Bind a function to a context, optionally partially applying any
+// arguments.
+proxy: function( fn, context ) {
+  // ...
+
+  // Set the guid of unique handler to the same of original handler, so it can be removed
+  proxy.guid = fn.guid = fn.guid || proxy.guid || jQuery.guid++;
+
+  return proxy;
+},
+```
 
 Beyond the basic event emitter
 ------------------------------
