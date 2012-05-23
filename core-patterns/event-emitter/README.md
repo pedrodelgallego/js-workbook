@@ -1,6 +1,13 @@
 The pubsub or Event Emitter pattern
 ===================================
 
+> Beyond events that are native to the browser, you can trigger and bind
+> them to your own custom events. Indeed, it’s a great way of
+> architecting libraries—a pattern a lot of jQuery plug-ins use. The W3C
+> spec for custom events has been largely ignored by the browser
+> vendors; you’ll have to use libraries like jQuery or Prototype for
+> this feature. [Javascript Web Applications, Macman]
+
 The goal of this kata is to build a simple and easy to use event
 emitter library. The event emitter will allow us to create our own
 custom events.
@@ -121,3 +128,31 @@ features. For example, jQuery have namespaced events i.e
 "click.delete" event, Backbone.js have the "all"
 event type, triggering all the handlers, or emit several events at the
 same time.
+
+The event aggregator pattern
+----------------------------
+
+Besides the native events, the user can trigger and bind its own
+events. A common pattern in desktop applications and now in js client
+side applications is the event aggregator. This pattern provides a
+channel events from multiple objects into a single object to simplify
+registration for clients.
+
+> A system with lots of objects can lead to complexities when a client
+> wants to subscribe to events. The client has to find and register for
+> each object individually, if each object has multiple events then each
+> event requires a separate subscription.
+>
+> An Event Aggregator acts as a single source of events for many
+> objects. It registers for all the events of the many objects
+> allowing clients to register with just the aggregator.
+>
+> The simplest Event Aggregator aggregates events from multiple objects
+> into itself, passing that same event onto its observers. An Event
+> Aggregator can also generalize the event, converting events that are
+> specific to a source object into a more generic event. That way the
+> observers of the aggregators don't need to register for as many
+> individual event types. This simplifies the registration process for
+> observers, at the cost of being notified of events that may not have
+> any material effect on the observer.
+> [Martin Fowler]
