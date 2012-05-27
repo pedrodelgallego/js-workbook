@@ -10,11 +10,15 @@ copy constructs a new compound object and then (to the extent
 possible) inserts references into it to the objects found in the
 original.
 
+The extend method is an essential part in many frameworks. In the code
+reading of this kata we will go into how jQuery use extend internally
+to add function to the jQuery namespace and how CoffeeScrip use
+internally __extend to create class inheritance.
 
 The API
 -------
 We are going to implement clone and extend function as they are
-described in the underscore documentation. extend and clone.
+described in the underscore documentation.
 
 **clone _.clone(object) **
 
@@ -37,3 +41,6 @@ previous arguments.
 _.extend({name : 'moe'}, {age : 50});
 => {name : 'moe', age : 50}
 ```
+
+Code Reading Section
+--------------------
